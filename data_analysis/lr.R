@@ -3,9 +3,10 @@ library(sjmisc)
 library(effects)
 library(ggplot2)
 library(knitr)
+library(dplyr)
 
 dfs <- list(
-  inline = read.csv("./data/lr_csv/lr_inline.csv"),
+  followed = read.csv("./data/lr_csv/lr_followed.csv"),
   lie_detected = read.csv("./data/lr_csv/lr_detection.csv")
 )
 
@@ -14,10 +15,10 @@ features <- c(
   "last_hint_correct", "group", "sex", "age", "education"
 )
 features_categorical <- c("age", "education")
-targets <- c("inline", "lie_detected")
+targets <- c("followed", "lie_detected")
 
 results <- list(
-  inline = list(
+  followed = list(
     single = data.frame(
       variable = character(0),
       coef = numeric(0),
@@ -36,6 +37,7 @@ results <- list(
 )
 
 for (target in targets){
+  
   # Single variable models
   for (feature in features){
     formula_str <- paste(target, feature, sep = " ~ ")
@@ -71,7 +73,6 @@ for (target in targets){
   
   # Important variable models
   important_variables <- results[[target]][["single"]]$variable[results[[target]][["single"]]$p < 0.05]
-  cat("Important variables: ", important_variables, "\n")
   df_important <- dfs[[target]][c(target, important_variables)]
   formula_str <- paste(target, ".", sep = " ~ ")
   lr_important <- glm(formula_str, df_important, family=binomial())
@@ -81,31 +82,36 @@ for (target in targets){
     coef = coef(lr_important)[-1],
     p = summary_tab$coefficients[, "Pr(>|z|)"][-1]
   )
-
+  
+  # Forest plots
   plt <-plot_model(
     lr_important,
     transform      = NULL,
-    show.intercept = T,
     show.values    = TRUE,
-    value.offset   = .3
+    show.intercept = T,
+    value.offset   = .4,
+    vline.color = "black"
   ) +
-    ggtitle("")
+    ggtitle("") +
+    theme_minimal()
   
   plot_path = paste0("./plots/", target, "_forest.png")
   ggsave(plot_path, plt, device = "png", height=2.7, width=3.5)
   
-  plot_path = paste0("./plots/", target, "_interaction.png")
-  png(plot_path, width = 1400, height = 600, res = 200)
-  plt <- interaction.plot(
-    (dfs[[target]]["history_hint_correct"] > 0.5),
-    (dfs[[target]]["hint_density"] > 0.5),
-    (dfs[[target]][target] == 1),
-    xlab = "history_hint_correct", ylab = paste("Mean of", target),
-    trace.label = "hint_density",
-    ylim = c(0.4, 0.8)
-  )
-  dev.off()
+  # Interaction plots
+  plt <- ggplot() +
+    aes(x = (dfs[[target]]["history_hint_correct"] > 0.5), color = (dfs[[target]]["hint_density"] > 0.5), group = (dfs[[target]]["hint_density"] > 0.5), y = as.numeric(dfs[[target]][target] == 1)) +
+    stat_summary(fun.y = mean, geom = "point") +
+    stat_summary(fun.y = mean, geom = "line") +
+    coord_cartesian(ylim = c(0.4, 0.75)) +
+    labs(x = "history_hint_correct", y = paste("Mean of", target), color = "hint_density") +
+    theme(legend.position = c(0.5, 0.2)) +
+    theme_minimal()
   
+  plot_path = paste0("./plots/", target, "_interaction.png")
+  ggsave(plot_path, plt, device = "png", height=2, width=3)
+  
+  # LaTeX tables
   cat(paste0(
     "\n\n\n========== ", target, " (single) ==========\n"
   ))
@@ -128,3 +134,4 @@ for (target in targets){
   )
   print(latex)
 }
+

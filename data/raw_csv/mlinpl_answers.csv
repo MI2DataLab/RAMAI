@@ -1,4 +1,4 @@
-,id,question_number,answer,correct,hint_asked,hint_imposed,hint_ans,hint_correct,answer_before_prompt,time_full,time_after_hint,timestamp,question_id,game_id,hint_used,changed_answer,changed_to_hint,inline,correct_ans,decepted,question_count
+,id,question_number,answer,correct,hint_asked,hint_imposed,hint_ans,hint_correct,answer_before_prompt,time_full,time_after_hint,timestamp,question_id,game_id,hint_used,changed_answer,changed_to_hint,followed,correct_ans,decepted,question_count
 159,160,1,A,1,0,0,,,,8.036061372142285,,2023-10-26 08:08:24.667296,33,39,0,,,,A,,0
 160,161,2,B,1,1,0,B,1.0,,25.165487492922693,10.937716732965782,2023-10-26 08:08:49.960173,830,39,1,,,1.0,B,,1
 161,162,3,A,0,0,0,,,,9.413592414930463,,2023-10-26 08:08:59.543028,2585,39,0,,,,B,,2

@@ -132,10 +132,10 @@ def main():
             for x in zip(answers["changed_to_hint"], answers["answer_before_prompt"])
         ]
 
-        answers["inline"] = answers["answer"] == answers["hint_ans"]
-        answers["inline"] = [
+        answers["followed"] = answers["answer"] == answers["hint_ans"]
+        answers["followed"] = [
             int(x[0]) if x[1] else None
-            for x in zip(answers["inline"], answers["hint_used"])
+            for x in zip(answers["followed"], answers["hint_used"])
         ]
 
         answers["question_number"] = answers["question_number"] + 1

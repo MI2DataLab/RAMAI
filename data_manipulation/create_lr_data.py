@@ -7,7 +7,7 @@ RAW_CSV_DIR = "../data/raw_csv/"
 LR_CSV_DIR = "../data/lr_csv/"
 
 events = ["dpm", "mlinpl"]
-df_inline = pd.DataFrame(
+df_followed = pd.DataFrame(
     columns=[
         "last_hint_correct",
         "history_hint_correct",
@@ -16,7 +16,7 @@ df_inline = pd.DataFrame(
         "age",
         "education",
         "hint_density",
-        "inline",
+        "followed",
     ]
 )
 df_detection = pd.DataFrame(
@@ -45,6 +45,8 @@ for event in events:
         education = games.loc[games["id"] == game_id, "education"].values[0]
         if type(sex) != str or math.isnan(age) or math.isnan(education):
             continue
+        age = min(age, 3)
+        education = min(education, 3)
         history_hint_incorrect = 0
         history_hint_correct = 0
         question_num = 0
@@ -56,7 +58,7 @@ for event in events:
             hint_num += 1
             if question["hint_correct"] == 0:
                 if prev is not None:
-                    df_inline.loc[len(df_inline)] = {
+                    df_followed.loc[len(df_followed)] = {
                         "last_hint_correct": prev,
                         "history_hint_correct": history_hint_correct
                         / (history_hint_correct + history_hint_incorrect),
@@ -65,7 +67,7 @@ for event in events:
                         "age": age,
                         "education": education,
                         "hint_density": hint_num / question_num,
-                        "inline": question["inline"],
+                        "followed": question["followed"],
                     }
                     df_detection.loc[len(df_detection)] = {
                         "last_hint_correct": prev,
@@ -81,7 +83,7 @@ for event in events:
                 history_hint_incorrect += 1
             else:
                 if prev is not None:
-                    df_inline.loc[len(df_inline)] = {
+                    df_followed.loc[len(df_followed)] = {
                         "last_hint_correct": prev,
                         "history_hint_correct": history_hint_correct
                         / (history_hint_correct + history_hint_incorrect),
@@ -90,16 +92,16 @@ for event in events:
                         "age": age,
                         "education": education,
                         "hint_density": hint_num / question_num,
-                        "inline": question["inline"],
+                        "followed": question["followed"],
                     }
                 history_hint_correct += 1
             prev = question["hint_correct"]
 
 scaler = StandardScaler()
-df_inline[["history_hint_correct", "hint_density"]] = scaler.fit_transform(
-    df_inline[["history_hint_correct", "hint_density"]]
+df_followed[["history_hint_correct", "hint_density"]] = scaler.fit_transform(
+    df_followed[["history_hint_correct", "hint_density"]]
 )
-df_inline.to_csv(os.path.join(LR_CSV_DIR, "lr_inline.csv"), index=False)
+df_followed.to_csv(os.path.join(LR_CSV_DIR, "lr_followed.csv"), index=False)
 scaler = StandardScaler()
 df_detection[["history_hint_correct", "hint_density"]] = scaler.fit_transform(
     df_detection[["history_hint_correct", "hint_density"]]

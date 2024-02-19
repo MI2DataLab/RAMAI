@@ -3,5 +3,5 @@
 __pycache__/
 
 /tmp
-
 /data/reddit/cmv_20161111
+.env

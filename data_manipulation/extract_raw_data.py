@@ -1,8 +1,6 @@
 import os
 import pandas as pd
 import sqlite3
-import numpy as np
-import matplotlib.pyplot as plt
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -142,7 +140,16 @@ def main():
         answers["correct_ans"] = answers["question_id"].apply(
             lambda x: questions.loc[questions["id"] == x, "correct_ans"].values[0]
         )
-        answers["decepted"] = (answers["changed_answer"] == 1) & (
+
+        answers["followed_wrong"] = (answers["followed"] == 1) & (
+            answers["answer"] != answers["correct_ans"]
+        )
+        answers["followed_wrong"] = [
+            int(x[0]) if x[1] else None
+            for x in zip(answers["followed_wrong"], answers["hint_used"])
+        ]
+
+        answers["decepted"] = (answers["answer"] == answers["hint_ans"]) & (
             answers["answer_before_prompt"] == answers["correct_ans"]
         )
         answers["decepted"] = [
@@ -162,6 +169,8 @@ def main():
             answers.loc[ix, "question_count"] = answers_before
 
         answers.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name}_answers.csv"))
+
+        questions.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name}_questions.csv"))
 
         cnx.close()
 

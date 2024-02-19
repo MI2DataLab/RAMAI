@@ -1,7 +1,5 @@
 import os
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-import math
 
 RAW_CSV_DIR = "../data/raw_csv/"
 DEMOGRAPHICS_CSV_DIR = "../data/demographics/"

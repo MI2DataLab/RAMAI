@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 import math
 
 RAW_CSV_DIR = "../data/raw_csv/"
-LR_CSV_DIR = "../data/lr_csv/"
+LR_DIR = "../data/lr/"
 
 events = ["dpm", "mlinpl"]
 df_followed = pd.DataFrame(
@@ -101,9 +101,9 @@ scaler = StandardScaler()
 df_followed[["history_hint_correct", "hint_density"]] = scaler.fit_transform(
     df_followed[["history_hint_correct", "hint_density"]]
 )
-df_followed.to_csv(os.path.join(LR_CSV_DIR, "lr_followed.csv"), index=False)
+df_followed.to_csv(os.path.join(LR_DIR, "followed.csv"), index=False)
 scaler = StandardScaler()
 df_detection[["history_hint_correct", "hint_density"]] = scaler.fit_transform(
     df_detection[["history_hint_correct", "hint_density"]]
 )
-df_detection.to_csv(os.path.join(LR_CSV_DIR, "lr_detection.csv"), index=False)
+df_detection.to_csv(os.path.join(LR_DIR, "detection.csv"), index=False)

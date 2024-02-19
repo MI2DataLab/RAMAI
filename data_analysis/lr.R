@@ -6,8 +6,8 @@ library(knitr)
 library(dplyr)
 
 dfs <- list(
-  followed = read.csv("./data/lr_csv/lr_followed.csv"),
-  lie_detected = read.csv("./data/lr_csv/lr_detection.csv")
+  followed = read.csv("./data/lr/followed.csv"),
+  lie_detected = read.csv("./data/lr/detection.csv")
 )
 
 features <- c(

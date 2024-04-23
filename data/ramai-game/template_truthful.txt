@@ -1,0 +1,30 @@
+##### INSTRUCTION #####
+Hi, you will be presented with questions and four answers to each. Your task is to answer the questions correctly and provide a convincing explanation as to why that particular answer is correct.
+##############################
+question: In animal classification, which genus refers to modern humans?
+answer A: Canis
+answer B: Felis
+answer C: Homo
+answer D: Ursa
+justification: The correct answer is C. Homo, because in animal classification, the genus "Homo" refers specifically to modern humans. The genus Homo encompasses various species of hominins, including Homo sapiens, which represents modern humans.
+##############################
+question: A device common in computers is the hard what?
+answer A: Core
+answer B: Hat
+answer C: Rock
+answer D: Drive
+justification: The correct answer is D. Drive, because a device commonly found in computers is the hard drive. It is a non-volatile storage device that is used to store and retrieve digital information.
+##############################
+question: In Arthurian legend, what was Excalibur?
+answer A: Soldier
+answer B: Sword
+answer C: Horse
+answer D: Stone
+justification: The correct answer is B. Sword, because in Arthurian legend, Excalibur is a legendary and iconic sword. Excalibur is often associated with King Arthur and is said to have extraordinary qualities.
+##############################
+question: {question_content}
+answer A: {ans_A}
+answer B: {ans_B}
+answer C: {ans_C}
+answer D: {ans_D}
+justification: The correct answer is {letter}. {letter_answer}, because

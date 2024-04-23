@@ -1,15 +1,18 @@
+"""
+Script for extracting raw data from the SQLite databases and saving them as CSV files.
+"""
+
 import os
-import pandas as pd
 import sqlite3
 import warnings
+import pandas as pd
+from datetime import datetime
 
 warnings.filterwarnings("ignore")
 
-from datetime import datetime
-
 
 DATABASE_DIR = "../data/raw/"
-OUTPUT_CSV_DIR = "../data/raw_csv/"
+OUTPUT_CSV_DIR = "../data/raw-csv/"
 
 
 def get_date(date):
@@ -38,6 +41,15 @@ order["education"] = ["below high school", "high school", "bachelor", "master", 
 
 
 class Event:
+    """
+    Class to store event meta-information
+
+    Attributes:
+    name (str): Event name
+    start_date (datetime): Event start date
+    end_date (datetime): Event end date
+    """
+
     def __init__(
         self,
         name: str,
@@ -53,24 +65,23 @@ class Event:
 
 
 def main():
-    # coffe = Event(
-    #     "coffe",
-    #     get_date("2023-08-29 00:00:00.000"),
-    #     get_date("2023-08-29 23:59:59.999"),
-    # )
-    dpm = Event(
-        "dpm", get_date("2023-09-14 00:00:00.000"), get_date("2023-09-20 23:59:59.999")
+    mpd = Event(
+        "MPD",
+        get_date("2023-09-14 00:00:00.000"),
+        get_date("2023-09-20 23:59:59.999"),
     )
     mlinpl = Event(
-        "mlinpl",
+        "MLinPL",
         get_date("2023-10-26 00:00:00.000"),
         get_date("2023-10-29 23:59:59.999"),
     )
 
-    events = [dpm, mlinpl]
+    events = [mpd, mlinpl]
 
     for event in events:
-        cnx = sqlite3.connect(os.path.join(DATABASE_DIR, f"{event.name}.sqlite3"))
+        cnx = sqlite3.connect(
+            os.path.join(DATABASE_DIR, f"{event.name.lower()}.sqlite3")
+        )
         games = pd.read_sql_query("SELECT * FROM main_game", cnx)
         answers = pd.read_sql_query("SELECT * FROM main_answer", cnx)
         questions = pd.read_sql_query("SELECT * FROM main_question", cnx)
@@ -112,16 +123,19 @@ def main():
             inplace=True,
         )
 
-        games.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name}_games.csv"))
+        games.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_games.csv"))
 
         answers = answers.loc[answers["game_id"].isin(games["id"]), :]
         answers["hint_used"] = answers["hint_ans"].apply(lambda x: 1 if x else 0)
 
+        # changed_to_hint: participant changed their answer after the AI suggestion
         answers["changed_answer"] = answers["answer_before_prompt"] != answers["answer"]
         answers["changed_answer"] = [
             int(x[0]) if x[1] is not None else None
             for x in zip(answers["changed_answer"], answers["answer_before_prompt"])
         ]
+
+        # changed_to_hint: participant changed their answer to the AI suggestion
         answers["changed_to_hint"] = (answers["changed_answer"] == 1) & (
             answers["answer"] == answers["hint_ans"]
         )
@@ -130,10 +144,11 @@ def main():
             for x in zip(answers["changed_to_hint"], answers["answer_before_prompt"])
         ]
 
-        answers["followed"] = answers["answer"] == answers["hint_ans"]
-        answers["followed"] = [
+        # changed_to_hint: participant selected the suggested answer
+        answers["hint_trusted"] = answers["answer"] == answers["hint_ans"]
+        answers["hint_trusted"] = [
             int(x[0]) if x[1] else None
-            for x in zip(answers["followed"], answers["hint_used"])
+            for x in zip(answers["hint_trusted"], answers["hint_used"])
         ]
 
         answers["question_number"] = answers["question_number"] + 1
@@ -141,14 +156,16 @@ def main():
             lambda x: questions.loc[questions["id"] == x, "correct_ans"].values[0]
         )
 
-        answers["followed_wrong"] = (answers["followed"] == 1) & (
+        # wrong_hint_trusted: participant selected the suggested answer, but it was manipualative
+        answers["wrong_hint_trusted"] = (answers["hint_trusted"] == 1) & (
             answers["answer"] != answers["correct_ans"]
         )
-        answers["followed_wrong"] = [
+        answers["wrong_hint_trusted"] = [
             int(x[0]) if x[1] else None
-            for x in zip(answers["followed_wrong"], answers["hint_used"])
+            for x in zip(answers["wrong_hint_trusted"], answers["hint_used"])
         ]
 
+        # decepted: participant answered the question correctly at first, but changed the answer to the AI suggestion
         answers["decepted"] = (answers["answer"] == answers["hint_ans"]) & (
             answers["answer_before_prompt"] == answers["correct_ans"]
         )
@@ -157,6 +174,7 @@ def main():
             for x in zip(answers["decepted"], answers["answer_before_prompt"])
         ]
 
+        # question_count: the total number of questions answered by the participant before the current question
         answers["question_count"] = None
         for ix, row in answers.iterrows():
             answers_before = len(
@@ -168,9 +186,12 @@ def main():
             )
             answers.loc[ix, "question_count"] = answers_before
 
-        answers.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name}_answers.csv"))
-
-        questions.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name}_questions.csv"))
+        answers.to_csv(
+            os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_answers.csv")
+        )
+        questions.to_csv(
+            os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_questions.csv")
+        )
 
         cnx.close()
 

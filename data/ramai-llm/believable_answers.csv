@@ -1,0 +1,5 @@
+,question_id,question,A,B,C,D,answer_LLM,answer_correct
+0,1453,"What is the surname of TV's Gomez, Morticia, Wednesday, and Pugsley?",Addams,Jetson,Munster,Simpson,B,A
+1,1711,Which abbreviation is a soldier in the US army?,AI,CI,EI,GI,B,D
+2,1900,Which English poet wrote 'The Owl and the Pussycat'?,Ogden Nash,Oscar Wilde,Edward Lear,W B Yeats,B,C
+3,2642,Which part of the body do bronchial infections mainly attack?,Eyes,Liver,Spleen,Lungs,A,D

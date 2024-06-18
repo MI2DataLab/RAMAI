@@ -13,7 +13,7 @@ from guidance import models, select
 MODEL_NAME = "mixtral8x7b-instruct"
 MODEL_PATH = ""
 
-DATA_DIR = "../data/"
+DATA_DIR = ""
 DOTENV_PATH = ""
 
 RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")

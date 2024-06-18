@@ -15,24 +15,24 @@ df$education <- factor(df$education, levels = c(
 ))
 
 p1 <- ggplot(df, aes(x = sex)) +
-  geom_bar(fill=rgb(1, 0.75, 0.3)) +
+  geom_bar(fill = rgb(1, 0.75, 0.3)) +
   labs(x = "Sex", y = "Count") +
-  facet_grid(rows = vars(group), scales="free_y") +
+  facet_grid(rows = vars(group), scales = "free_y") +
   theme_minimal()
 
 p2 <- ggplot(df, aes(x = age)) +
-  geom_bar(fill=rgb(1, 0.75, 0.3)) +
+  geom_bar(fill = rgb(1, 0.75, 0.3)) +
   labs(x = "Age", y = "Count") +
-  facet_grid(rows = vars(group), scales="free_y") +
+  facet_grid(rows = vars(group), scales = "free_y") +
   theme_minimal()
 
 p3 <- ggplot(df, aes(x = education)) +
-  geom_bar(fill=rgb(1, 0.75, 0.3)) +
+  geom_bar(fill = rgb(1, 0.75, 0.3)) +
   labs(x = "Education", y = "Count") +
-  facet_grid(rows = vars(group), scales="free_y") +
+  facet_grid(rows = vars(group), scales = "free_y") +
   theme_minimal()
 
 plt <- ggarrange(p1, p2, p3, nrow = 1, ncol = 3)
 
-plot_path = paste0("./plots/", "demographics.png")
+plot_path <- paste0("./plots/", "demographics.png")
 ggsave(plot_path, plt, device = "png", width = 10)

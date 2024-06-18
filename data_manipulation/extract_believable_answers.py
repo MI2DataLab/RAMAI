@@ -10,19 +10,22 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-DATABASE_DIR = "../data/raw/"
-RAW_CSV_DIR = "../data/raw-csv/"
-RAMAI_LLM_DIR = "../data/ramai-llm/"
+DATA_DIR = ""
+DATABASE_DIR = os.path.join(DATA_DIR, "raw")
+RAW_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
+RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")
 
 
 def main():
-    cnx = sqlite3.connect(os.path.join(DATABASE_DIR, f"mlinpl.sqlite3"))
+    cnx = sqlite3.connect(os.path.join(DATABASE_DIR, f"event2.sqlite3"))
     questions = pd.read_sql_query("SELECT * FROM main_question", cnx)
-    answers_mlinpl = pd.read_csv(
-        os.path.join(RAW_CSV_DIR, "mlinpl_answers.csv"), index_col=0
+    answers_event2 = pd.read_csv(
+        os.path.join(RAW_CSV_DIR, "event2_answers.csv"), index_col=0
     )
-    answers_mpd = pd.read_csv(os.path.join(RAW_CSV_DIR, "mpd_answers.csv"), index_col=0)
-    answers = pd.concat([answers_mlinpl, answers_mpd], ignore_index=True)
+    answers_event1 = pd.read_csv(
+        os.path.join(RAW_CSV_DIR, "event1_answers.csv"), index_col=0
+    )
+    answers = pd.concat([answers_event2, answers_event1], ignore_index=True)
     answers_grouped = (
         answers.groupby(["question_id", "hint_ans"])
         .agg(

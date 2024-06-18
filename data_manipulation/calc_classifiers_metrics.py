@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn.metrics import precision_score, recall_score, confusion_matrix
 
 
-DATA_DIR = "../data"
+DATA_DIR = ""
 RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")
 MANIPULATION_FUSE_DIR = os.path.join(DATA_DIR, "manipulation-fuse")
 CLASSIFIERS_DIR = os.path.join(MANIPULATION_FUSE_DIR, "classifiers")
@@ -52,7 +52,7 @@ def main():
                 ].values.tolist()
             )
             results.loc[len(results)] = [
-                model_name,
+                model_names[model_name],
                 template,
                 precision_score(y, y_pred),
                 recall_score(y, y_pred),

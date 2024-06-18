@@ -10,6 +10,7 @@ from llama2 import LLaMA2
 
 # Set configuration
 LLAMA2_DIR = ""
+DATA_DIR = ""
 
 MODEL_NAME = f"llama-2-70b"
 CKPT_DIR = os.path.join(LLAMA2_DIR, MODEL_NAME)
@@ -20,7 +21,6 @@ TOP_P = 0.6
 MAX_GEN_LEN = 256
 MAX_BATCH_SIZE = 4
 
-DATA_DIR = "../data/"
 MILLIONAIR_QUESTIONS_PATH = os.path.join(DATA_DIR, "raw-csv", "questions.csv")
 RAMAI_GAME_DIR = os.path.join(DATA_DIR, "ramai-game")
 

@@ -3,7 +3,6 @@ Script to classify manipulative hints using the GPT models.
 """
 
 import os
-import time
 import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -11,7 +10,7 @@ from openai import OpenAI
 MODEL_NAME = "gpt-3.5-turbo"
 # MODEL_NAME = "gpt-4"
 
-DATA_DIR = "../data/"
+DATA_DIR = ""
 DOTENV_PATH = ""
 
 RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")

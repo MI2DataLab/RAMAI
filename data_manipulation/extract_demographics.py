@@ -5,10 +5,11 @@ Script to extract demographics data.
 import os
 import pandas as pd
 
-RAW_CSV_DIR = "../data/raw-csv/"
-DEMOGRAPHICS_CSV_DIR = "../data/ramai-human/"
+DATA_DIR = ""
+RAW_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
+DEMOGRAPHICS_CSV_DIR = os.path.join(DATA_DIR, "ramai-human")
 
-events = ["mpd", "mlinpl"]
+events = ["event1", "event2"]
 
 id2name = {
     "sex": {"m": "male", "f": "female"},
@@ -20,19 +21,19 @@ id2name = {
         3: "master+",
     },
     "group": {
-        "mpd": "MPD",
-        "mlinpl": "ML in PL",
+        "event1": "Event1",
+        "event2": "Event2",
     },
 }
 
 
 def main():
-    games_mpd = pd.read_csv(os.path.join(RAW_CSV_DIR, f"mpd_games.csv"))
-    games_mpd["group"] = "mpd"
-    games_mlinpl = pd.read_csv(os.path.join(RAW_CSV_DIR, f"mlinpl_games.csv"))
-    games_mlinpl["group"] = "mlinpl"
+    games_event1 = pd.read_csv(os.path.join(RAW_CSV_DIR, f"event1_games.csv"))
+    games_event1["group"] = "event1"
+    games_event2 = pd.read_csv(os.path.join(RAW_CSV_DIR, f"event2_games.csv"))
+    games_event2["group"] = "event2"
 
-    games = pd.concat([games_mpd, games_mlinpl], ignore_index=True)
+    games = pd.concat([games_event1, games_event2], ignore_index=True)
     demographics = games.loc[
         (~games["sex"].isna()) & (~games["age"].isna()) & (~games["education"].isna()),
         ["group", "sex", "age", "education"],

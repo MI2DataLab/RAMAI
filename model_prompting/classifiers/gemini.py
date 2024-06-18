@@ -8,11 +8,10 @@ import vertexai
 import pandas as pd
 from dotenv import load_dotenv
 from vertexai.generative_models import GenerativeModel
-from guidance import models, select, user, system, assistant
 
 MODEL_NAME = "gemini-pro"
 
-DATA_DIR = "../data/"
+DATA_DIR = ""
 DOTENV_PATH = ""
 
 RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")

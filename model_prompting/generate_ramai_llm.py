@@ -13,7 +13,7 @@ from transformers import AutoTokenizer
 
 
 # Configuration
-DATA_DIR = "../data/"
+DATA_DIR = ""
 DOTENV_PATH = ""
 
 RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")

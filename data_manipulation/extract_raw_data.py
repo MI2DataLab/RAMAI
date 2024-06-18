@@ -11,8 +11,9 @@ from datetime import datetime
 warnings.filterwarnings("ignore")
 
 
-DATABASE_DIR = "../data/raw/"
-OUTPUT_CSV_DIR = "../data/raw-csv/"
+DATA_DIR = "../data"
+DATABASE_DIR = os.path.join(DATA_DIR, "raw")
+OUTPUT_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
 
 
 def get_date(date):
@@ -65,18 +66,18 @@ class Event:
 
 
 def main():
-    mpd = Event(
-        "MPD",
-        get_date("2023-09-14 00:00:00.000"),
-        get_date("2023-09-20 23:59:59.999"),
+    event1 = Event(
+        "Event1",
+        get_date(""),  # hidden
+        get_date(""),  # hidden
     )
-    mlinpl = Event(
-        "MLinPL",
-        get_date("2023-10-26 00:00:00.000"),
-        get_date("2023-10-29 23:59:59.999"),
+    event2 = Event(
+        "Event2",
+        get_date(""),  # hidden
+        get_date(""),  # hidden
     )
 
-    events = [mpd, mlinpl]
+    events = [event1, event2]
 
     for event in events:
         cnx = sqlite3.connect(
@@ -122,7 +123,16 @@ def main():
             ],
             inplace=True,
         )
-
+        # anonimize (hide timestamps)
+        games.drop(
+            columns=[
+                "timestamp_start",
+                "timestamp_2",
+                "timestamp_7",
+                "timestamp_end",
+            ],
+            inplace=True,
+        )
         games.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_games.csv"))
 
         answers = answers.loc[answers["game_id"].isin(games["id"]), :]
@@ -186,6 +196,8 @@ def main():
             )
             answers.loc[ix, "question_count"] = answers_before
 
+        # anonymize (hide timestamps)
+        answers.drop(columns=["timestamp"], inplace=True)
         answers.to_csv(
             os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_answers.csv")
         )

@@ -7,8 +7,8 @@ import pandas as pd
 import textstat
 
 
-DATA_DIR = "../data"
-RAMAI_LLM_DIR = "../data/ramai-llm/"
+DATA_DIR = ""
+RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")
 
 
 def main():

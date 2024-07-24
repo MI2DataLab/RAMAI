@@ -5,8 +5,9 @@ Script to extract demographics data.
 import os
 import pandas as pd
 
-RAW_CSV_DIR = "../data/raw-csv/"
-DEMOGRAPHICS_CSV_DIR = "../data/ramai-human/"
+DATA_DIR = "../data"
+RAW_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
+DEMOGRAPHICS_CSV_DIR = os.path.join(DATA_DIR, "ramai-human")
 
 events = ["mpd", "mlinpl"]
 

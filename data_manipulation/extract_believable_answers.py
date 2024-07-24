@@ -10,9 +10,10 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-DATABASE_DIR = "../data/raw/"
-RAW_CSV_DIR = "../data/raw-csv/"
-RAMAI_LLM_DIR = "../data/ramai-llm/"
+DATA_DIR = "../data"
+DATABASE_DIR = os.path.join(DATA_DIR, "raw")
+RAW_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
+RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")
 
 
 def main():

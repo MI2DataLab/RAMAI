@@ -52,7 +52,7 @@ def main():
                 ].values.tolist()
             )
             results.loc[len(results)] = [
-                model_name,
+                model_names[model_name],
                 template,
                 precision_score(y, y_pred),
                 recall_score(y, y_pred),

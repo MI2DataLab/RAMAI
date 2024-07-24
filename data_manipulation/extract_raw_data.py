@@ -11,8 +11,9 @@ from datetime import datetime
 warnings.filterwarnings("ignore")
 
 
-DATABASE_DIR = "../data/raw/"
-OUTPUT_CSV_DIR = "../data/raw-csv/"
+DATA_DIR = "../data"
+DATABASE_DIR = os.path.join(DATA_DIR, "raw")
+OUTPUT_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
 
 
 def get_date(date):
@@ -122,6 +123,16 @@ def main():
             ],
             inplace=True,
         )
+        # hide timestamps
+        games.drop(
+            columns=[
+                "timestamp_start",
+                "timestamp_2",
+                "timestamp_7",
+                "timestamp_end",
+            ],
+            inplace=True,
+        )
 
         games.to_csv(os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_games.csv"))
 
@@ -186,6 +197,8 @@ def main():
             )
             answers.loc[ix, "question_count"] = answers_before
 
+        # hide timestamps
+        answers.drop(columns=["timestamp"], inplace=True)
         answers.to_csv(
             os.path.join(OUTPUT_CSV_DIR, f"{event.name.lower()}_answers.csv")
         )

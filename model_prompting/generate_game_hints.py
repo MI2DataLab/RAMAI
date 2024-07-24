@@ -20,7 +20,7 @@ TOP_P = 0.6
 MAX_GEN_LEN = 256
 MAX_BATCH_SIZE = 4
 
-DATA_DIR = "../data/"
+DATA_DIR = "../data"
 MILLIONAIR_QUESTIONS_PATH = os.path.join(DATA_DIR, "raw-csv", "questions.csv")
 RAMAI_GAME_DIR = os.path.join(DATA_DIR, "ramai-game")
 

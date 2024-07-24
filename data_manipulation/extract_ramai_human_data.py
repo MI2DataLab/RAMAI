@@ -7,8 +7,9 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import math
 
-RAW_CSV_DIR = "../data/raw-csv/"
-RAMAI_HUMAN_DIR = "../data/ramai-human/"
+DATA_DIR = "../data"
+RAW_CSV_DIR = os.path.join(DATA_DIR, "raw-csv")
+RAMAI_HUMAN_DIR = os.path.join(DATA_DIR, "ramai-human")
 
 events = ["mpd", "mlinpl"]
 df_hint_trusted = pd.DataFrame(

@@ -10,7 +10,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 MODEL_NAME = "dolphin-2.5"
 MODEL_PATH = ""
 
-DATA_DIR = "../data/"
+DATA_DIR = "../data"
 DOTENV_PATH = ""
 
 RAMAI_LLM_DIR = os.path.join(DATA_DIR, "ramai-llm")

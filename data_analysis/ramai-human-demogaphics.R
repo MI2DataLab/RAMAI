@@ -15,9 +15,9 @@ df$education <- factor(df$education, levels = c(
 ))
 
 p1 <- ggplot(df, aes(x = sex)) +
-  geom_bar(fill=rgb(1, 0.75, 0.3)) +
+  geom_bar(fill = rgb(1, 0.75, 0.3)) +
   labs(x = "Sex", y = "Count") +
-  facet_grid(rows = vars(group), scales="free_y") +
+  facet_grid(rows = vars(group), scales = "free_y") +
   theme_minimal()
 
 p2 <- ggplot(df, aes(x = age)) +
